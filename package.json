@@ -1,0 +1,26 @@
+{
+  "name": "telegram-crypto-bot",
+  "version": "1.0.0",
+  "description": "AlphaNews - Crypto news bot for Telegram",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.64.0",
+    "ws": "^8.14.2",
+    "sqlite3": "^5.1.6",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.0",
+    "@types/ws": "^8.5.8",
+    "typescript": "^5.2.2",
+    "tsx": "^3.14.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
