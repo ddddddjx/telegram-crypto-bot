@@ -1,9 +1,10 @@
+// @ts-ignore - 忽略类型检查
 import TelegramBot from 'node-telegram-bot-api';
 import { DatabaseManager } from '../database/DatabaseManager';
 import { ProcessedMessage } from './MessageProcessor';
 
 export class CryptoNewsBot {
-  private bot: TelegramBot;
+  private bot: any;
   private db: DatabaseManager;
 
   constructor(token: string, db: DatabaseManager) {
@@ -15,7 +16,7 @@ export class CryptoNewsBot {
 
   private setupCommands(): void {
     // 启动命令
-    this.bot.onText(/\/start/, async (msg) => {
+    this.bot.onText(/\/start/, async (msg: any) => {
       const chatId = msg.chat.id.toString();
       const chatTitle = msg.chat.title || msg.chat.first_name || 'Unknown';
       
@@ -53,7 +54,7 @@ Bot已激活，开始接收新闻推送！🚀
     });
 
     // 状态查询
-    this.bot.onText(/\/status/, async (msg) => {
+    this.bot.onText(/\/status/, async (msg: any) => {
       const chatId = msg.chat.id.toString();
       
       try {
@@ -85,7 +86,7 @@ Bot正在正常运行！
     });
 
     // 设置过滤器
-    this.bot.onText(/\/filter (.+)/, async (msg, match) => {
+    this.bot.onText(/\/filter (.+)/, async (msg: any, match: any) => {
       const chatId = msg.chat.id.toString();
       const filterInput = match?.[1];
       
@@ -96,8 +97,8 @@ Bot正在正常运行！
       
       try {
         const coins = filterInput.split(' ')
-          .map(coin => coin.toUpperCase().trim())
-          .filter(coin => coin.length > 0);
+          .map((coin: string) => coin.toUpperCase().trim())
+          .filter((coin: string) => coin.length > 0);
         
         await this.db.updateChatFilters(chatId, coins);
         
@@ -119,7 +120,7 @@ Bot正在正常运行！
     });
 
     // 移除过滤器
-    this.bot.onText(/\/unfilter/, async (msg) => {
+    this.bot.onText(/\/unfilter/, async (msg: any) => {
       const chatId = msg.chat.id.toString();
       
       try {
@@ -132,7 +133,7 @@ Bot正在正常运行！
     });
 
     // 停止服务
-    this.bot.onText(/\/stop/, async (msg) => {
+    this.bot.onText(/\/stop/, async (msg: any) => {
       const chatId = msg.chat.id.toString();
       
       try {
@@ -145,7 +146,7 @@ Bot正在正常运行！
     });
 
     // 帮助信息
-    this.bot.onText(/\/help/, async (msg) => {
+    this.bot.onText(/\/help/, async (msg: any) => {
       const helpMessage = `
 🤖 **AlphaNews Bot帮助**
 
@@ -171,7 +172,7 @@ Bot正在正常运行！
     });
 
     // 错误处理
-    this.bot.on('polling_error', (error) => {
+    this.bot.on('polling_error', (error: any) => {
       console.error('❌ Telegram Bot轮询错误:', error);
     });
   }
@@ -186,7 +187,7 @@ Bot正在正常运行！
           // 检查过滤器
           const filters = JSON.parse(chat.filters || '[]');
           if (filters.length > 0) {
-            const hasMatchingCoin = processedMessage.coins.some(coin => 
+            const hasMatchingCoin = processedMessage.coins.some((coin: string) => 
               filters.includes(coin.toUpperCase())
             );
             if (!hasMatchingCoin) {
